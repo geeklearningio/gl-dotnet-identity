@@ -1,7 +1,10 @@
 {
   "version": "1.0.0-*",
-  "buildOptions": {
-    "emitEntryPoint": true
+  "authors": [ "Geek Learning", "Cyprien Autexier" ],
+  "packOptions": {
+    "tags": [ "identity", "oauth2" ],
+    "projectUrl": "https://github.com/geeklearningio/gl-dotnet-identity",
+    "licenseUrl": "https://github.com/geeklearningio/gl-dotnet-identity/blob/develop/LICENSE.md"
   },
 
   "dependencies": {

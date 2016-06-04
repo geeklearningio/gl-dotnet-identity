@@ -1,8 +1,13 @@
 {
-  "version": "1.0.0-*",
-
+  "version": "0.0.1-*",
+ "authors": [ "Geek Learning", "Cyprien Autexier" ],
+  "packOptions": {
+    "tags": [ "identity", "oauth2" ],
+    "projectUrl": "https://github.com/geeklearningio/gl-dotnet-identity",
+    "licenseUrl": "https://github.com/geeklearningio/gl-dotnet-identity/blob/develop/LICENSE.md"
+  },
   "dependencies": {
-    "GeekLearning.Authentication.OAuth.Server": "1.0.0-*",
+    "GeekLearning.Authentication.OAuth.Server": "*",
     "Microsoft.AspNetCore.Mvc.ViewFeatures": "1.0.0-rc2-final",
     "NETStandard.Library": "1.5.0-rc2-24027"
   },

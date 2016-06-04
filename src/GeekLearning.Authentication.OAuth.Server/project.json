@@ -1,6 +1,11 @@
 {
-  "version": "1.0.0-*",
-
+  "version": "0.0.1-*",
+  "authors": [ "Geek Learning", "Cyprien Autexier" ],
+  "packOptions": {
+    "tags": [ "identity", "oauth2" ],
+    "projectUrl": "https://github.com/geeklearningio/gl-dotnet-identity",
+    "licenseUrl": "https://github.com/geeklearningio/gl-dotnet-identity/blob/develop/LICENSE.md"
+  },
   "dependencies": {
     "Microsoft.AspNetCore.WebUtilities": "1.0.0-rc2-final",
     "Microsoft.AspNetCore.Http.Abstractions": "1.0.0-rc2-final",
