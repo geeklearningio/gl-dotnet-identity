@@ -1,0 +1,68 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C5D31C82-9B04-495E-A05B-8A8A3019C5E7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FFFF0747-FC07-4ECE-9E31-7F6F67A7A5A2}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		global.json = global.json
+		LICENSE.md = LICENSE.md
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GeekLearning.Identity.Sample", "samples\GeekLearning.Identity.Sample\GeekLearning.Identity.Sample.xproj", "{A12248AC-F0DE-422B-B592-76CBB8492DA0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{AF8538FC-4717-427B-890D-9630FFD5C4D6}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GeekLearning.Authentication.OAuth.Server", "src\GeekLearning.Authentication.OAuth.Server\GeekLearning.Authentication.OAuth.Server.xproj", "{2EDED1ED-A38E-4AB5-A50A-CFCA22AD30C4}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GeekLearning.Identity.Sample.Client", "samples\GeekLearning.Identity.Sample.Client\GeekLearning.Identity.Sample.Client.xproj", "{39E3649A-91E7-4B21-BFC8-2833B6B79509}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{94282D80-4888-4DA5-A4FA-10FFB9621AD0}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GeekLearning.Tools.RsaKeyGenerator", "tools\GeekLearning.Tools.RsaKeyGenerator\GeekLearning.Tools.RsaKeyGenerator.xproj", "{2D00AF53-F3E9-4811-818C-9D0CCF39C103}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GeekLearning.Authentication.OAuth.Server.Mvc", "src\GeekLearning.Authentication.OAuth.Server.Mvc\GeekLearning.Authentication.OAuth.Server.Mvc.xproj", "{B47F2B03-C042-456D-B0D7-4483E0F7A99E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A12248AC-F0DE-422B-B592-76CBB8492DA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A12248AC-F0DE-422B-B592-76CBB8492DA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A12248AC-F0DE-422B-B592-76CBB8492DA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A12248AC-F0DE-422B-B592-76CBB8492DA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EDED1ED-A38E-4AB5-A50A-CFCA22AD30C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EDED1ED-A38E-4AB5-A50A-CFCA22AD30C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EDED1ED-A38E-4AB5-A50A-CFCA22AD30C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EDED1ED-A38E-4AB5-A50A-CFCA22AD30C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39E3649A-91E7-4B21-BFC8-2833B6B79509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39E3649A-91E7-4B21-BFC8-2833B6B79509}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39E3649A-91E7-4B21-BFC8-2833B6B79509}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39E3649A-91E7-4B21-BFC8-2833B6B79509}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D00AF53-F3E9-4811-818C-9D0CCF39C103}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D00AF53-F3E9-4811-818C-9D0CCF39C103}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D00AF53-F3E9-4811-818C-9D0CCF39C103}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D00AF53-F3E9-4811-818C-9D0CCF39C103}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B47F2B03-C042-456D-B0D7-4483E0F7A99E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B47F2B03-C042-456D-B0D7-4483E0F7A99E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B47F2B03-C042-456D-B0D7-4483E0F7A99E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B47F2B03-C042-456D-B0D7-4483E0F7A99E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A12248AC-F0DE-422B-B592-76CBB8492DA0} = {AF8538FC-4717-427B-890D-9630FFD5C4D6}
+		{2EDED1ED-A38E-4AB5-A50A-CFCA22AD30C4} = {C5D31C82-9B04-495E-A05B-8A8A3019C5E7}
+		{39E3649A-91E7-4B21-BFC8-2833B6B79509} = {AF8538FC-4717-427B-890D-9630FFD5C4D6}
+		{2D00AF53-F3E9-4811-818C-9D0CCF39C103} = {94282D80-4888-4DA5-A4FA-10FFB9621AD0}
+		{B47F2B03-C042-456D-B0D7-4483E0F7A99E} = {C5D31C82-9B04-495E-A05B-8A8A3019C5E7}
+	EndGlobalSection
+EndGlobal
