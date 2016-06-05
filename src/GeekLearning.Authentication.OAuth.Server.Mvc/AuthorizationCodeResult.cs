@@ -9,7 +9,7 @@
     {
         private AuthorizationRequest authorizationRequest;
 
-        public AuthorizationCodeResult(AuthorizationRequest request) : base(request.RedirectUri)
+        public AuthorizationCodeResult(AuthorizationRequest request) : base(request.Redirect_Uri)
         {
             this.authorizationRequest = request;
         }
@@ -18,7 +18,7 @@
         {
             var tokenProvider = context.HttpContext.RequestServices.GetRequiredService<ITokenProvider>();
 
-            var redirectUri = Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString(authorizationRequest.RedirectUri,
+            var redirectUri = Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString(authorizationRequest.Redirect_Uri,
                 new Dictionary<string, string>()
                 {
                     ["code"] = tokenProvider.GenerateAuthorizationToken(authorizationRequest, context.HttpContext.User),

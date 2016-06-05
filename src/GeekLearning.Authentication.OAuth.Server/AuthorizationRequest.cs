@@ -7,11 +7,11 @@ namespace GeekLearning.Authentication.OAuth.Server
 {
     public class AuthorizationRequest
     {
-        public string ResponseType { get; set; }
+        public string Response_Type { get; set; }
 
-        public string ClientId { get; set; }
+        public string Client_Id { get; set; }
 
-        public string RedirectUri { get; set; }
+        public string Redirect_Uri { get; set; }
 
         public string Scope { get; set; }
 

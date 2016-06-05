@@ -9,8 +9,10 @@ namespace GeekLearning.Authentication.OAuth.Server
 {
     public static class GeekLearningAuthenticationOAuthServerExtensions
     {
-        public static IServiceCollection AddOAuthServer(this IServiceCollection services)
+        public static IServiceCollection AddOAuthServer<TClientProvider>(this IServiceCollection services)
+            where TClientProvider : class, IClientProvider
         {
+            services.AddScoped<IClientProvider, TClientProvider>();
             services.AddTransient<ITokenProvider, DefaultTokenProvider>();
 
             return services;
@@ -18,7 +20,7 @@ namespace GeekLearning.Authentication.OAuth.Server
 
         public static IApplicationBuilder UseOAuthServer(this IApplicationBuilder appBuilder)
         {
-            appBuilder.UseMiddleware<GeekLearning.Authentication.OAuth.Server.OAuthServerMiddleware>();   
+            appBuilder.UseMiddleware<GeekLearning.Authentication.OAuth.Server.OAuthServerMiddleware>();
             return appBuilder;
         }
     }

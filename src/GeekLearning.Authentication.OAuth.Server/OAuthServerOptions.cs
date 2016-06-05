@@ -17,5 +17,9 @@ namespace GeekLearning.Authentication.OAuth.Server
         public Dictionary<string, SigningCredentials> Keys { get; set; } = new Dictionary<string, SigningCredentials>();
 
         public string Issuer { get; set; }
+
+        public TimeSpan AccesssTokenLifetime { get; set; } = TimeSpan.FromHours(24);
+        public TimeSpan RefreshTokenLifetime { get; set; } = TimeSpan.FromDays(365);
+        public TimeSpan AuthorizationCodeLifetime { get; set; } = TimeSpan.FromMinutes(5);
     }
 }
