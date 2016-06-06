@@ -65,10 +65,12 @@ namespace GeekLearning.Authentication.OAuth.Server
                     var responseContent = Newtonsoft.Json.JsonConvert.SerializeObject(new
                     {
                         access_token = token,
-                        token_type = "access_token",
+                        token_type = "bearer",
                         expires_in = this.options.Value.AccesssTokenLifetime.TotalSeconds,
                     });
 
+                    context.Response.Headers.Add("Cache-Control", "no-store");
+                    context.Response.Headers.Add("Pragma", "no-cache");
                     context.Response.StatusCode = 200;
                     context.Response.ContentType = "application/json";
                     await context.Response.WriteAsync(responseContent);
