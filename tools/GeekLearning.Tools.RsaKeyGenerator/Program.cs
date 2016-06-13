@@ -14,6 +14,7 @@ namespace GeekLearning.Tools.RsaKeyGenerator
 
         public static void Main(string[] args)
         {
+            string alg = "rsa";
             var outputPath = System.IO.Directory.GetCurrentDirectory();
             byte[] password = null;
             byte[] salt = new byte[32];
@@ -24,6 +25,7 @@ namespace GeekLearning.Tools.RsaKeyGenerator
             {
                 syntax.DefineOption("o|outputPath", ref outputPath, "The output path where to write new keys");
                 syntax.DefineOption("p|password", ref password, str => GetPasswordDerivedBytes(str, salt), "The password to protect the private key");
+                syntax.DefineOption("a|alg", ref alg, "Algorithm to use (rsa or ecdsa)");
             });
 
             if (password == null)
@@ -35,10 +37,23 @@ namespace GeekLearning.Tools.RsaKeyGenerator
                 Console.WriteLine($"Generated Password : {passwordString}");
             }
 
+            if (alg == "rsa")
+            {
+                GenerateRSAKey(outputPath, password, salt, kId);
+            }
+            else if (alg == "ecdsa")
+            {
+                GenerateECDSAKey(outputPath, password, salt, kId);
+            }
+
+            Console.ReadLine();
+        }
+
+        private static void GenerateRSAKey(string outputPath, byte[] password, byte[] salt, string kId)
+        {
             RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(2048);
             ExportPrivateKey(rsa, kId, outputPath, password, salt);
             ExportPublicKey(rsa, kId, outputPath);
-            Console.ReadLine();
         }
 
         private static byte[] GetPasswordDerivedBytes(string password, byte[] salt)
@@ -95,8 +110,44 @@ namespace GeekLearning.Tools.RsaKeyGenerator
                 stream.FlushFinalBlock();
             }
 
-            System.IO.File.WriteAllText(System.IO.Path.Combine(outputPath, kId + ".key.private"), 
+            System.IO.File.WriteAllText(System.IO.Path.Combine(outputPath, kId + ".key.private"),
                 Convert.ToBase64String(salt) + "." + Convert.ToBase64String(encrypted.ToArray()));
+        }
+
+        private static void GenerateECDSAKey(string outputPath, byte[] password, byte[] salt, string kId)
+        {
+            ECDsaCng ecdsa = new ECDsaCng(256);
+            ExportECDSAPrivateKey(ecdsa, kId, outputPath, password, salt);
+            ExportECDSAPublicKey(ecdsa, kId, outputPath);
+        }
+
+        public static void ExportECDSAPrivateKey(ECDsaCng ecdsa, string kId, string outputPath, byte[] password, byte[] salt)
+        {
+            var key = ecdsa.Key.Export(CngKeyBlobFormat.EccPrivateBlob);
+
+            var aes = Aes.Create();
+            aes.Key = password;
+            aes.GenerateIV();
+            aes.Mode = CipherMode.CBC;
+            aes.Padding = PaddingMode.PKCS7;
+
+            var transform = aes.CreateEncryptor();
+            var encrypted = new MemoryStream();
+            encrypted.Write(aes.IV, 0, aes.IV.Length);
+            using (CryptoStream stream = new CryptoStream(encrypted, transform, CryptoStreamMode.Write))
+            {
+                stream.Write(key, 0, key.Length);
+                stream.FlushFinalBlock();
+            }
+
+            File.WriteAllText(System.IO.Path.Combine(outputPath, kId + ".key.private"),
+                Convert.ToBase64String(salt) + "." + Convert.ToBase64String(encrypted.ToArray()));
+        }
+
+        public static void ExportECDSAPublicKey(ECDsaCng ecdsa, string kId, string outputPath)
+        {
+            var key = ecdsa.Key.Export(CngKeyBlobFormat.EccPublicBlob);
+            File.WriteAllText(System.IO.Path.Combine(outputPath, kId + ".key.public"), Convert.ToBase64String(key));
         }
     }
 }

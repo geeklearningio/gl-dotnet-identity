@@ -50,16 +50,29 @@ namespace GeekLearning.Identity.Sample
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
-            services.AddOAuthServer();
+            services.AddOAuthServer<Services.SampleClientProvider>();
 
             var keyId = Configuration["OAuthServer:DefaultKey:Id"];
-            var rsaParams = RsaKeyHelper.ReadParameters(Configuration["OAuthServer:DefaultKey:PrivateKey"], Configuration["OAuthServer:DefaultKey:PrivateKeyPassword"]);
-            var securityKey = new RsaSecurityKey(rsaParams);
+            var alg = Configuration["OAuthServer:DefaultKey:Alg"];
+            SecurityKey securityKey = null;
+            SigningCredentials signingCredentials = null;
+            if (alg == "rsa")
+            {
+                var rsaParams = RsaKeyHelper.ReadParameters(Configuration["OAuthServer:DefaultKey:PrivateKey"], Configuration["OAuthServer:DefaultKey:PrivateKeyPassword"]);
+                securityKey = new RsaSecurityKey(rsaParams);
+                signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.RsaSha256Signature);
+            }
+            else if (alg == "ecdsa")
+            {
+                var cngKey = ECDSAKeyHelper.ReadParameters(Configuration["OAuthServer:DefaultKey:PrivateKey"], Configuration["OAuthServer:DefaultKey:PrivateKeyPassword"]);
+                securityKey = new ECDsaSecurityKey(new System.Security.Cryptography.ECDsaCng(cngKey));
+                signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.EcdsaSha256Signature);
+            }
 
             services.Configure<OAuthServerOptions>(options =>
             {
                 options.Issuer = Configuration["OAuthServer:Issuer"];
-                options.Keys.Add(keyId, new SigningCredentials(securityKey, SecurityAlgorithms.RsaSha256Signature));
+                options.Keys.Add(keyId, signingCredentials);
             });
 
             // Add application services.
