@@ -61,5 +61,25 @@ namespace GeekLearning.Security.Cryptography
 
             return rsaParams;
         }
+
+        public static RSAParameters ReadPublicParameters(string key)
+        {
+            var decrypted = new MemoryStream(Convert.FromBase64String(key));
+
+            RSAParameters rsaParams = new RSAParameters();
+            using (var reader = new System.IO.BinaryReader(decrypted))
+            {
+                rsaParams.D = reader.ReadLengthPrefixedBufferNullIfEmpty();
+                rsaParams.DP = reader.ReadLengthPrefixedBufferNullIfEmpty();
+                rsaParams.DQ = reader.ReadLengthPrefixedBufferNullIfEmpty();
+                rsaParams.Exponent = reader.ReadLengthPrefixedBufferNullIfEmpty();
+                rsaParams.InverseQ = reader.ReadLengthPrefixedBufferNullIfEmpty();
+                rsaParams.Modulus = reader.ReadLengthPrefixedBufferNullIfEmpty();
+                rsaParams.P = reader.ReadLengthPrefixedBufferNullIfEmpty();
+                rsaParams.Q = reader.ReadLengthPrefixedBufferNullIfEmpty();
+            }
+
+            return rsaParams;
+        }
     }
 }

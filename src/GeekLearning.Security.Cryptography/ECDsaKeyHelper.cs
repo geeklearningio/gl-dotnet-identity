@@ -48,5 +48,10 @@ namespace GeekLearning.Security.Cryptography
 
             return CngKey.Import(decrypted.ToArray(), CngKeyBlobFormat.EccPrivateBlob);
         }
+
+        public static CngKey ReadPublicParameters(string key)
+        {
+            return CngKey.Import(Convert.FromBase64String(key), CngKeyBlobFormat.EccPublicBlob);
+        }
     }
 }
