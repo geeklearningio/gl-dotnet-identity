@@ -38,7 +38,8 @@
       "version": "1.0.0-preview1-final",
       "type": "build"
     },
-    "GeekLearning.Authentication.OAuth.Server.Mvc": "*"
+    "GeekLearning.Authentication.OAuth.Server.Mvc": "*",
+    "GeekLearning.Security.Cryptography": "*"
   },
 
   "tools": {

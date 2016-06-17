@@ -1,15 +1,14 @@
 ﻿
-namespace GeekLearning.Authentication.OAuth.Server
+namespace GeekLearning.Security.Cryptography
 {
     using System;
     using System.IO;
     using System.Linq;
     using System.Security.Cryptography;
     using Utilities;
-
-    public class ECDSAKeyHelper
+    public class RsaKeyHelper
     {
-        public static CngKey ReadParameters(string key, string password)
+        public static RSAParameters ReadParameters(string key, string password)
         {
             var keyParts = key.Split('.');
             var salt = Convert.FromBase64String(keyParts[0]);
@@ -47,7 +46,20 @@ namespace GeekLearning.Authentication.OAuth.Server
 
             decrypted.Seek(0, SeekOrigin.Begin);
 
-            return CngKey.Import(decrypted.ToArray(), CngKeyBlobFormat.EccPrivateBlob);
+            RSAParameters rsaParams = new RSAParameters();
+            using (var reader = new System.IO.BinaryReader(decrypted))
+            {
+                rsaParams.D = reader.ReadLengthPrefixedBuffer();
+                rsaParams.DP = reader.ReadLengthPrefixedBuffer();
+                rsaParams.DQ = reader.ReadLengthPrefixedBuffer();
+                rsaParams.Exponent = reader.ReadLengthPrefixedBuffer();
+                rsaParams.InverseQ = reader.ReadLengthPrefixedBuffer();
+                rsaParams.Modulus = reader.ReadLengthPrefixedBuffer();
+                rsaParams.P = reader.ReadLengthPrefixedBuffer();
+                rsaParams.Q = reader.ReadLengthPrefixedBuffer();
+            }
+
+            return rsaParams;
         }
     }
 }

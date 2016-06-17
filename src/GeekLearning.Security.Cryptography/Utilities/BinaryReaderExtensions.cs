@@ -1,4 +1,4 @@
-﻿namespace GeekLearning.Authentication.OAuth.Server.Utilities
+﻿namespace GeekLearning.Security.Cryptography.Utilities
 {
     using System.IO;
 

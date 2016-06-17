@@ -14,6 +14,7 @@ using GeekLearning.Identity.Sample.Models;
 using GeekLearning.Identity.Sample.Services;
 using GeekLearning.Authentication.OAuth.Server;
 using Microsoft.IdentityModel.Tokens;
+using GeekLearning.Security.Cryptography;
 
 namespace GeekLearning.Identity.Sample
 {

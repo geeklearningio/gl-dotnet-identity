@@ -28,6 +28,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GeekLearning.Tools.RsaKeyGe
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GeekLearning.Authentication.OAuth.Server.Mvc", "src\GeekLearning.Authentication.OAuth.Server.Mvc\GeekLearning.Authentication.OAuth.Server.Mvc.xproj", "{B47F2B03-C042-456D-B0D7-4483E0F7A99E}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GeekLearning.Security.Cryptography", "src\GeekLearning.Security.Cryptography\GeekLearning.Security.Cryptography.xproj", "{281907BF-2D3A-4104-B45A-675E8AFD66C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{B47F2B03-C042-456D-B0D7-4483E0F7A99E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B47F2B03-C042-456D-B0D7-4483E0F7A99E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B47F2B03-C042-456D-B0D7-4483E0F7A99E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{281907BF-2D3A-4104-B45A-675E8AFD66C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{281907BF-2D3A-4104-B45A-675E8AFD66C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{281907BF-2D3A-4104-B45A-675E8AFD66C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{281907BF-2D3A-4104-B45A-675E8AFD66C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,5 +70,6 @@ Global
 		{39E3649A-91E7-4B21-BFC8-2833B6B79509} = {AF8538FC-4717-427B-890D-9630FFD5C4D6}
 		{2D00AF53-F3E9-4811-818C-9D0CCF39C103} = {94282D80-4888-4DA5-A4FA-10FFB9621AD0}
 		{B47F2B03-C042-456D-B0D7-4483E0F7A99E} = {C5D31C82-9B04-495E-A05B-8A8A3019C5E7}
+		{281907BF-2D3A-4104-B45A-675E8AFD66C3} = {C5D31C82-9B04-495E-A05B-8A8A3019C5E7}
 	EndGlobalSection
 EndGlobal
