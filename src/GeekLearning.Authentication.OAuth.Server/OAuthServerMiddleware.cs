@@ -9,7 +9,7 @@ namespace GeekLearning.Authentication.OAuth.Server
     using Microsoft.Extensions.Logging;
     using System;
     using Microsoft.Extensions.DependencyInjection;
-    // This project can output the Class library as a NuGet Package.
+    using System.Linq;    // This project can output the Class library as a NuGet Package.
     // To enable this option, right-click on the project and select the Properties menu item. In the Build tab select "Produce outputs on build".
     public class OAuthServerMiddleware
     {
@@ -49,22 +49,56 @@ namespace GeekLearning.Authentication.OAuth.Server
             {
                 Grant_Type = context.Request.Form["grant_type"],
                 Code = context.Request.Form["code"],
+                Refresh_Token = context.Request.Form["refresh_token"],
                 Redirect_Uri = context.Request.Form["redirect_uri"],
                 Client_Id = context.Request.Form["client_id"],
                 Client_Secret = context.Request.Form["client_secret"],
             };
 
+            ITokenValidationResult grantValidation = null;
+            IClientValidationResult clientValidation = null;
+            bool includeRefreshToken = false;
+
+            if (request.Grant_Type == "authorization_code")
+            {
+                grantValidation = tokenProvider.ValidateAuthorizationCode(request.Code);
+                if (grantValidation.Success)
+                {
+                    clientValidation = await clientProvider.ValidateCredentialsAsync(grantValidation.NameIdentifier, request.Client_Id, request.Client_Secret);
+                    includeRefreshToken = true;
+                }
+            }
+            else if (request.Grant_Type == "refresh_token")
+            {
+                grantValidation = tokenProvider.ValidateRefreshToken(request.Refresh_Token);
+                if (grantValidation.Success)
+                {
+                    clientValidation = await clientProvider.ValidateTokenAsync(grantValidation.NameIdentifier, request.Client_Id);
+                }
+            }
+
             var result = tokenProvider.ValidateAuthorizationCode(request.Code);
 
-            if (result.Success)
+            if (grantValidation != null && grantValidation.Success)
             {
-                var clientValidation = await clientProvider.ValidateCredentialsAsync(result.NameIdentifier, request.Client_Id, request.Client_Secret);
                 if (clientValidation.Success)
                 {
-                    var token = tokenProvider.GenerateAccessToken(clientValidation.Identity);
+                    IToken token = tokenProvider.GenerateAccessToken(clientValidation.Identity, (await clientProvider.GetClientAudiences(request.Client_Id)).Concat(new[] { options.Value.Issuer }));
+                    IToken refreshToken = null;
+                    if (includeRefreshToken)
+                    {
+                        refreshToken = tokenProvider.GenerateRefreshToken(clientValidation.Identity, new[] { options.Value.Issuer });
+                        await clientProvider.OnTokenEmitted(request.Client_Id, result.NameIdentifier, new IToken[] { token, refreshToken });
+                    }
+                    else
+                    {
+                        await clientProvider.OnTokenEmitted(request.Client_Id, result.NameIdentifier, new IToken[] { token });
+                    }
+
                     var responseContent = Newtonsoft.Json.JsonConvert.SerializeObject(new
                     {
-                        access_token = token,
+                        refresh_token = refreshToken?.Token,
+                        access_token = token?.Token,
                         token_type = "bearer",
                         expires_in = this.options.Value.AccesssTokenLifetime.TotalSeconds,
                     });

@@ -4,11 +4,13 @@ namespace GeekLearning.Authentication.OAuth.Server
 {
     using System.Security.Claims;
     using Microsoft.Extensions.Primitives;
-
+    using System.Collections.Generic;
     public interface ITokenProvider
     {
-        string GenerateAuthorizationToken(AuthorizationRequest request, ClaimsPrincipal identity);
+        IToken GenerateAuthorizationToken(AuthorizationRequest request, ClaimsPrincipal identity);
         ITokenValidationResult ValidateAuthorizationCode(string code);
-        string GenerateAccessToken(ClaimsIdentity identity);
+        IToken GenerateAccessToken(ClaimsIdentity identity, IEnumerable<string> audiences);
+        ITokenValidationResult ValidateRefreshToken(string refreshToken);
+        IToken GenerateRefreshToken(ClaimsIdentity identity, IEnumerable<string> audiences);
     }
 }

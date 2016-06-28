@@ -21,7 +21,7 @@
             var redirectUri = Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString(authorizationRequest.Redirect_Uri,
                 new Dictionary<string, string>()
                 {
-                    ["code"] = tokenProvider.GenerateAuthorizationToken(authorizationRequest, context.HttpContext.User),
+                    ["code"] = tokenProvider.GenerateAuthorizationToken(authorizationRequest, context.HttpContext.User).Token,
                     ["state"] = authorizationRequest.State,
                 });
 
