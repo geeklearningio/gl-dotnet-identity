@@ -59,7 +59,7 @@ namespace GeekLearning.Authentication.OAuth.Server
             IClientValidationResult clientValidation = null;
             bool includeRefreshToken = false;
 
-            if (request.Grant_Type == "authorization_code")
+            if (request.Grant_Type == "client_credentials")
             {
                 grantValidation = tokenProvider.ValidateAuthorizationCode(request.Code);
                 if (grantValidation.Success)
