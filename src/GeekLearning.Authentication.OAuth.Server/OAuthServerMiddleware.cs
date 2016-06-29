@@ -40,6 +40,16 @@ namespace GeekLearning.Authentication.OAuth.Server
             }
         }
 
+        private string SafeFormRead(HttpContext context, string key)
+        {
+            Microsoft.Extensions.Primitives.StringValues values;
+            if (context.Request.Form.TryGetValue(key, out values))
+            {
+                return values;
+            }
+            return null;
+        }
+
         private async Task ProcessTokenRequest(HttpContext context)
         {
             var clientProvider = context.RequestServices.GetRequiredService<IClientProvider>();
@@ -47,19 +57,19 @@ namespace GeekLearning.Authentication.OAuth.Server
 
             var request = new TokenRequest
             {
-                Grant_Type = context.Request.Form["grant_type"],
-                Code = context.Request.Form["code"],
-                Refresh_Token = context.Request.Form["refresh_token"],
-                Redirect_Uri = context.Request.Form["redirect_uri"],
-                Client_Id = context.Request.Form["client_id"],
-                Client_Secret = context.Request.Form["client_secret"],
+                Grant_Type = SafeFormRead(context, "grant_type"),
+                Code = SafeFormRead(context, "code"),
+                Refresh_Token = SafeFormRead(context, "refresh_token"),
+                Redirect_Uri = SafeFormRead(context, "redirect_uri"),
+                Client_Id = SafeFormRead(context, "client_id"),
+                Client_Secret = SafeFormRead(context, "client_secret"),
             };
 
             ITokenValidationResult grantValidation = null;
             IClientValidationResult clientValidation = null;
             bool includeRefreshToken = false;
 
-            if (request.Grant_Type == "client_credentials")
+            if (request.Grant_Type == "authorization_code")
             {
                 grantValidation = tokenProvider.ValidateAuthorizationCode(request.Code);
                 if (grantValidation.Success)
