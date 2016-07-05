@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-
-namespace GeekLearning.Authentication.OAuth.Server.Mvc
+﻿namespace GeekLearning.Authentication.OAuth.Server.Mvc
 {
+    using Microsoft.AspNetCore.Mvc;
+
     public static class OAuthServerControllerExtensions
     {
         public static AuthorizationCodeResult AuthorizationCode(this Controller controller, AuthorizationRequest request)

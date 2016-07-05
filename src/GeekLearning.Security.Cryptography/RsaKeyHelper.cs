@@ -1,11 +1,10 @@
-﻿
-namespace GeekLearning.Security.Cryptography
+﻿namespace GeekLearning.Security.Cryptography
 {
     using System;
     using System.IO;
-    using System.Linq;
     using System.Security.Cryptography;
     using Utilities;
+
     public class RsaKeyHelper
     {
         public static RSAParameters ReadParameters(string key, string password)
@@ -21,7 +20,6 @@ namespace GeekLearning.Security.Cryptography
             var aes = Aes.Create();
             aes.IV = iv;
             aes.Key = passwordDeriveBytes.GetBytes(32);
-            //aes.Padding = PaddingMode.PKCS7;
             aes.Mode = CipherMode.CBC;
             var decrypted = new MemoryStream();
 
