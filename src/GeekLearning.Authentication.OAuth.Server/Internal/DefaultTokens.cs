@@ -1,11 +1,8 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace GeekLearning.Authentication.OAuth.Server.Internal
+﻿namespace GeekLearning.Authentication.OAuth.Server.Internal
 {
+    using Microsoft.IdentityModel.Tokens;
+    using System;
+
     public static class DefaultTokensHelper
     {
         public static IToken GetAccessToken(this SecurityTokenHandler handler, string id, SecurityToken token)
@@ -39,23 +36,14 @@ namespace GeekLearning.Authentication.OAuth.Server.Internal
             this.Type = type;
         }
 
-        public DateTimeOffset FromDate
-        {
-            get;
-        }
+        public DateTimeOffset FromDate { get; }
 
-        public DateTimeOffset ToDate
-        {
-            get;
-        }
+        public DateTimeOffset ToDate { get; }
 
         public string Id { get; }
 
         public string Token { get; }
 
-        public string Type
-        {
-            get;
-        }
+        public string Type { get; }
     }
 }

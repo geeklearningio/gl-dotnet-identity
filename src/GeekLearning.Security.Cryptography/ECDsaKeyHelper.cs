@@ -1,9 +1,7 @@
-﻿
-namespace GeekLearning.Security.Cryptography
+﻿namespace GeekLearning.Security.Cryptography
 {
     using System;
     using System.IO;
-    using System.Linq;
     using System.Security.Cryptography;
 
     public class ECDSAKeyHelper

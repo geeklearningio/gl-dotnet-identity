@@ -1,15 +1,14 @@
 ﻿namespace GeekLearning.Authentication.OAuth.Server
 {
+    using Internal;
     using Microsoft.Extensions.Options;
+    using Microsoft.IdentityModel.Tokens;
     using System;
+    using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
     using System.Security.Claims;
-    using Microsoft.Extensions.Primitives;
-    using Microsoft.IdentityModel.Tokens;
-    using System.Collections.Generic;
-    using Internal;
-    using System.Threading.Tasks;
+
     public class DefaultTokenProvider : ITokenProvider
     {
         private IOptions<OAuthServerOptions> options;
@@ -85,16 +84,17 @@
             {
                 return false;
             }
+
             var now = DateTimeOffset.UtcNow;
             return now - validationParameters.ClockSkew < new DateTimeOffset(expires.Value, TimeSpan.Zero)
                 && now + validationParameters.ClockSkew > new DateTimeOffset(notBefore.Value, TimeSpan.Zero);
         }
 
-
         public ITokenValidationResult ValidateAuthorizationCode(string code)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            Microsoft.IdentityModel.Tokens.SecurityToken token;
+            SecurityToken token;
+
             try
             {
                 var claimsPrincipal = tokenHandler.ValidateToken(code, new Microsoft.IdentityModel.Tokens.TokenValidationParameters
@@ -103,6 +103,7 @@
                     ValidAudience = this.options.Value.Issuer,
                     IssuerSigningKeys = this.options.Value.Keys.Values.Select(x => x.Key)
                 }, out token);
+
                 return new TokenValidationResult
                 {
                     Success = true,
@@ -116,13 +117,13 @@
                     Success = false
                 };
             }
-
         }
 
         public ITokenValidationResult ValidateRefreshToken(string refreshToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            Microsoft.IdentityModel.Tokens.SecurityToken token;
+            SecurityToken token;
+
             try
             {
                 var claimsPrincipal = tokenHandler.ValidateToken(refreshToken, new Microsoft.IdentityModel.Tokens.TokenValidationParameters
@@ -131,6 +132,7 @@
                     ValidAudience = this.options.Value.Issuer,
                     IssuerSigningKeys = this.options.Value.Keys.Values.Select(x => x.Key)
                 }, out token);
+
                 return new TokenValidationResult
                 {
                     Success = true,
@@ -144,7 +146,6 @@
                     Success = false
                 };
             }
-
         }
 
         public IToken GenerateRefreshToken(ClaimsIdentity identity, IEnumerable<string> audiences)
@@ -152,7 +153,7 @@
             var tokenId = Guid.NewGuid().ToString("N");
             var tokenHandler = new JwtSecurityTokenHandler();
             var signingKey = this.options.Value.Keys.First();
-            var token = tokenHandler.CreateToken(new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
+            var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
                 Audience = this.options.Value.Issuer,
                 Expires = (DateTime.Now + this.options.Value.RefreshTokenLifetime),

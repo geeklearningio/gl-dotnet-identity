@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace GeekLearning.Authentication.OAuth.Server
+﻿namespace GeekLearning.Authentication.OAuth.Server
 {
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.Extensions.DependencyInjection;
+
     public static class GeekLearningAuthenticationOAuthServerExtensions
     {
         public static IServiceCollection AddOAuthServer<TClientProvider>(this IServiceCollection services)
@@ -20,7 +16,7 @@ namespace GeekLearning.Authentication.OAuth.Server
 
         public static IApplicationBuilder UseOAuthServer(this IApplicationBuilder appBuilder)
         {
-            appBuilder.UseMiddleware<GeekLearning.Authentication.OAuth.Server.OAuthServerMiddleware>();
+            appBuilder.UseMiddleware<OAuthServerMiddleware>();
             return appBuilder;
         }
     }

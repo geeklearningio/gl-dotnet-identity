@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace GeekLearning.Tools.RsaKeyGenerator
+﻿namespace GeekLearning.Tools.RsaKeyGenerator
 {
+    using System.IO;
+
     public static class BinaryWriterExtensions
     {
         public static void WriteLengthPrefixedBuffer(this BinaryWriter writer, byte[] buffer)

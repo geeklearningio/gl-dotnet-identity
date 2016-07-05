@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
-using System.CommandLine;
-using System.IO;
-
-namespace GeekLearning.Tools.RsaKeyGenerator
+﻿namespace GeekLearning.Tools.RsaKeyGenerator
 {
+    using System;
+    using System.IO;
+    using System.Security.Cryptography;
+
     public class Program
     {
         private static RandomNumberGenerator rng = RandomNumberGenerator.Create();
@@ -15,18 +11,18 @@ namespace GeekLearning.Tools.RsaKeyGenerator
         public static void Main(string[] args)
         {
             string alg = "rsa";
-            var outputPath = System.IO.Directory.GetCurrentDirectory();
+            var outputPath = Directory.GetCurrentDirectory();
             byte[] password = null;
             byte[] salt = new byte[32];
             string kId = Guid.NewGuid().ToString("N");
             rng.GetBytes(salt);
 
-            ArgumentSyntax.Parse(args, syntax =>
-            {
-                syntax.DefineOption("o|outputPath", ref outputPath, "The output path where to write new keys");
-                syntax.DefineOption("p|password", ref password, str => GetPasswordDerivedBytes(str, salt), "The password to protect the private key");
-                syntax.DefineOption("a|alg", ref alg, "Algorithm to use (rsa or ecdsa)");
-            });
+            //ArgumentSyntax.Parse(args, syntax =>
+            //{
+            //    syntax.DefineOption("o|outputPath", ref outputPath, "The output path where to write new keys");
+            //    syntax.DefineOption("p|password", ref password, str => GetPasswordDerivedBytes(str, salt), "The password to protect the private key");
+            //    syntax.DefineOption("a|alg", ref alg, "Algorithm to use (rsa or ecdsa)");
+            //});
 
             if (password == null)
             {
@@ -58,16 +54,16 @@ namespace GeekLearning.Tools.RsaKeyGenerator
 
         private static byte[] GetPasswordDerivedBytes(string password, byte[] salt)
         {
-            var passwordDeriver = new System.Security.Cryptography.Rfc2898DeriveBytes(password, salt);
+            var passwordDeriver = new Rfc2898DeriveBytes(password, salt);
             return passwordDeriver.GetBytes(32);
         }
 
         public static void ExportPublicKey(RSACryptoServiceProvider rsa, string kId, string outputPath)
         {
             var rsaParams = rsa.ExportParameters(false);
-            var ms = new System.IO.MemoryStream();
+            var ms = new MemoryStream();
             var noBytes = new byte[0];
-            System.IO.BinaryWriter w = new System.IO.BinaryWriter(ms);
+            BinaryWriter w = new BinaryWriter(ms);
             w.WriteLengthPrefixedBuffer(rsaParams.D ?? noBytes);
             w.WriteLengthPrefixedBuffer(rsaParams.DP ?? noBytes);
             w.WriteLengthPrefixedBuffer(rsaParams.DQ ?? noBytes);
@@ -77,14 +73,14 @@ namespace GeekLearning.Tools.RsaKeyGenerator
             w.WriteLengthPrefixedBuffer(rsaParams.P ?? noBytes);
             w.WriteLengthPrefixedBuffer(rsaParams.Q ?? noBytes);
             w.Flush();
-            System.IO.File.WriteAllText(System.IO.Path.Combine(outputPath, kId + ".key.public"), Convert.ToBase64String(ms.ToArray()));
+            File.WriteAllText(Path.Combine(outputPath, kId + ".key.public"), Convert.ToBase64String(ms.ToArray()));
         }
 
         public static void ExportPrivateKey(RSACryptoServiceProvider rsa, string kId, string outputPath, byte[] password, byte[] salt)
         {
             var rsaParams = rsa.ExportParameters(true);
-            var ms = new System.IO.MemoryStream();
-            System.IO.BinaryWriter w = new System.IO.BinaryWriter(ms);
+            var ms = new MemoryStream();
+            BinaryWriter w = new BinaryWriter(ms);
             w.WriteLengthPrefixedBuffer(rsaParams.D);
             w.WriteLengthPrefixedBuffer(rsaParams.DP);
             w.WriteLengthPrefixedBuffer(rsaParams.DQ);
@@ -110,7 +106,7 @@ namespace GeekLearning.Tools.RsaKeyGenerator
                 stream.FlushFinalBlock();
             }
 
-            System.IO.File.WriteAllText(System.IO.Path.Combine(outputPath, kId + ".key.private"),
+            File.WriteAllText(Path.Combine(outputPath, kId + ".key.private"),
                 Convert.ToBase64String(salt) + "." + Convert.ToBase64String(encrypted.ToArray()));
         }
 
@@ -140,14 +136,14 @@ namespace GeekLearning.Tools.RsaKeyGenerator
                 stream.FlushFinalBlock();
             }
 
-            File.WriteAllText(System.IO.Path.Combine(outputPath, kId + ".key.private"),
+            File.WriteAllText(Path.Combine(outputPath, kId + ".key.private"),
                 Convert.ToBase64String(salt) + "." + Convert.ToBase64String(encrypted.ToArray()));
         }
 
         public static void ExportECDSAPublicKey(ECDsaCng ecdsa, string kId, string outputPath)
         {
             var key = ecdsa.Key.Export(CngKeyBlobFormat.EccPublicBlob);
-            File.WriteAllText(System.IO.Path.Combine(outputPath, kId + ".key.public"), Convert.ToBase64String(key));
+            File.WriteAllText(Path.Combine(outputPath, kId + ".key.public"), Convert.ToBase64String(key));
         }
     }
 }

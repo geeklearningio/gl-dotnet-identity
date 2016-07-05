@@ -1,28 +1,25 @@
-﻿
-
-namespace GeekLearning.Authentication.OAuth.Server
+﻿namespace GeekLearning.Authentication.OAuth.Server
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using Microsoft.Extensions.Options;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.Extensions.Logging;
-    using System;
     using Microsoft.Extensions.DependencyInjection;
-    using System.Linq;    // This project can output the Class library as a NuGet Package.
-    // To enable this option, right-click on the project and select the Properties menu item. In the Build tab select "Produce outputs on build".
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Options;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     public class OAuthServerMiddleware
     {
+        private readonly RequestDelegate next;
+        private readonly IOptions<OAuthServerOptions> options;
+        private ILogger<OAuthServerMiddleware> logger;
+
         public OAuthServerMiddleware(RequestDelegate next, IOptions<OAuthServerOptions> options, ILogger<OAuthServerMiddleware> logger)
         {
             this.next = next;
             this.options = options;
             this.logger = logger;
         }
-
-        private readonly RequestDelegate next;
-        private readonly IOptions<OAuthServerOptions> options;
-        private ILogger<OAuthServerMiddleware> logger;
 
         public async Task Invoke(HttpContext context)
         {
@@ -47,6 +44,7 @@ namespace GeekLearning.Authentication.OAuth.Server
             {
                 return values;
             }
+
             return null;
         }
 
@@ -120,17 +118,9 @@ namespace GeekLearning.Authentication.OAuth.Server
                     await context.Response.WriteAsync(responseContent);
                     return;
                 }
-                else
-                {
-                    this.Forbid(context);
-                    return;
-                }
             }
-            else
-            {
-                this.Forbid(context);
-                return;
-            }
+
+            this.Forbid(context);
         }
 
         private async Task ProcessAuthorizationRequest(HttpContext context)
