@@ -1,20 +1,21 @@
 {
   "version": "0.0.1-*",
- "authors": [ "Geek Learning", "Cyprien Autexier" ],
+  "description": "OAuth 2.0 server extensions for ASP.NET MVC 6.",
+  "authors": [ "Geek Learning", "Cyprien Autexier", "Adrien Siffermann" ],
   "packOptions": {
     "tags": [ "identity", "oauth2" ],
     "projectUrl": "https://github.com/geeklearningio/gl-dotnet-identity",
-    "licenseUrl": "https://github.com/geeklearningio/gl-dotnet-identity/blob/develop/LICENSE.md"
+    "licenseUrl": "https://github.com/geeklearningio/gl-dotnet-identity/blob/master/LICENSE.md"
   },
+
   "dependencies": {
-    "GeekLearning.Authentication.OAuth.Server": "*",
-    "Microsoft.AspNetCore.Mvc.ViewFeatures": "1.0.0-rc2-final",
-    "NETStandard.Library": "1.5.0-rc2-24027"
+    "NETStandard.Library": "1.6.0",
+    "Microsoft.AspNetCore.Mvc.ViewFeatures": "1.0.0",
+    "GeekLearning.Authentication.OAuth.Server": "*"
   },
 
   "frameworks": {
-    "netstandard1.5": {
-      "imports": "dnxcore50"
-    }
+    "net452": {},
+    "netstandard1.6": {}
   }
 }

@@ -1,20 +1,23 @@
 {
-  "version": "1.0.0-*",
+  "version": "0.0.1-*",
+  "description": "Cryptography helpers for RSA and ECDSA.",
+  "authors": [ "Geek Learning", "Cyprien Autexier", "Adrien Siffermann" ],
+  "packOptions": {
+    "tags": [ "security", "cryptography" ],
+    "projectUrl": "https://github.com/geeklearningio/gl-dotnet-identity",
+    "licenseUrl": "https://github.com/geeklearningio/gl-dotnet-identity/blob/master/LICENSE.md"
+  },
 
   "dependencies": {
-    "NETStandard.Library": "1.5.0-rc2-24027",
-    "GeekLearning.D64": "0.1.0-unstable0007"
+    "NETStandard.Library": "1.6.0",
+    "GeekLearning.D64": "1.0.0"
   },
 
   "frameworks": {
-    "netstandard1.5": {
-      "imports": "dnxcore50",
+    "net452": {},
+    "netstandard1.3": {
       "dependencies": {
-        "System.Security.Cryptography.Cng": "4.1.0-rc2-24027"
-      }
-    },
-    "net451": {
-      "frameworkAssemblies": {
+        "System.Security.Cryptography.Cng": "4.2.0"
       }
     }
   }

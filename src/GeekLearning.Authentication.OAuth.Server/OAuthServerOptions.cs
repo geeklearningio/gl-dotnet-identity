@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace GeekLearning.Authentication.OAuth.Server
+﻿namespace GeekLearning.Authentication.OAuth.Server
 {
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.IdentityModel.Tokens;
+    using System;
+    using System.Collections.Generic;
+
     public class OAuthServerOptions
     {
         public PathString TokenEndpointPath { get; set; } = "/.well-known/oauth2/token";
@@ -20,7 +18,9 @@ namespace GeekLearning.Authentication.OAuth.Server
         public string Issuer { get; set; }
 
         public TimeSpan AccesssTokenLifetime { get; set; } = TimeSpan.FromHours(24);
+
         public TimeSpan RefreshTokenLifetime { get; set; } = TimeSpan.FromDays(365);
+
         public TimeSpan AuthorizationCodeLifetime { get; set; } = TimeSpan.FromMinutes(5);
     }
 }
