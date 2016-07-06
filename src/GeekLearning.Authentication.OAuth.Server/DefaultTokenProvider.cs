@@ -11,6 +11,10 @@
 
     public class DefaultTokenProvider : ITokenProvider
     {
+        public const string TokenIdClaim = "https://claims.schemas.geeklearning.io/oauth2/token_id";
+        public const string TokenUsageClaim = "https://claims.schemas.geeklearning.io/oauth2/token_usage";
+        public const string KeyIdClaim = "https://claims.schemas.geeklearning.io/oauth2/token_usage";
+
         private IOptions<OAuthServerOptions> options;
         private IClientProvider clientProvider;
 
@@ -29,9 +33,9 @@
             var tokenClaimsIdentity = identity.Clone();
             tokenClaimsIdentity.AddClaims(new Claim[]
             {
-                    new Claim("https://claims.schemas.geeklearning.io/oauth2/token_id", tokenId),
-                    new Claim("https://claims.schemas.geeklearning.io/oauth2/token_usage", "access_token"),
-                    new Claim("https://claims.schemas.geeklearning.io/oauth2/keyid", signingKey.Key),
+                    new Claim(TokenIdClaim, tokenId),
+                    new Claim(TokenUsageClaim, "access_token"),
+                    new Claim(KeyIdClaim, signingKey.Key),
             });
 
             var token = tokenHandler.CreateToken(new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
@@ -68,9 +72,9 @@
                 SigningCredentials = signingKey.Value,
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim("https://claims.schemas.geeklearning.io/oauth2/token_id", tokenId),
-                    new Claim("https://claims.schemas.geeklearning.io/oauth2/token_usage", "authorization_code"),
-                    new Claim("https://claims.schemas.geeklearning.io/oauth2/keyid", signingKey.Key),
+                    new Claim(TokenIdClaim, tokenId),
+                    new Claim(TokenUsageClaim, "authorization_code"),
+                    new Claim(KeyIdClaim, signingKey.Key),
                     identity.FindFirst(ClaimTypes.NameIdentifier)
                 })
             });
@@ -107,7 +111,9 @@
                 return new TokenValidationResult
                 {
                     Success = true,
-                    NameIdentifier = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier).Value
+                    NameIdentifier = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier).Value,
+                    Usage = claimsPrincipal.FindFirst(TokenUsageClaim).Value,
+                    Id = claimsPrincipal.FindFirst(TokenIdClaim).Value,
                 };
             }
             catch
@@ -136,7 +142,9 @@
                 return new TokenValidationResult
                 {
                     Success = true,
-                    NameIdentifier = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier).Value
+                    NameIdentifier = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier).Value,
+                    Usage = claimsPrincipal.FindFirst(TokenUsageClaim).Value,
+                    Id = claimsPrincipal.FindFirst(TokenIdClaim).Value,
                 };
             }
             catch
@@ -163,9 +171,9 @@
                 SigningCredentials = signingKey.Value,
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim("https://claims.schemas.geeklearning.io/oauth2/token_id", tokenId),
-                    new Claim("https://claims.schemas.geeklearning.io/oauth2/token_usage", "refresh_token"),
-                    new Claim("https://claims.schemas.geeklearning.io/oauth2/keyid", signingKey.Key),
+                    new Claim(TokenIdClaim, tokenId),
+                    new Claim(TokenUsageClaim, "refresh_token"),
+                    new Claim(KeyIdClaim, signingKey.Key),
                     identity.FindFirst(ClaimTypes.NameIdentifier)
                 })
             });
@@ -175,9 +183,13 @@
 
         public class TokenValidationResult : ITokenValidationResult
         {
+            public string Id { get; set; }
+
             public string NameIdentifier { get; set; }
 
             public bool Success { get; set; }
+
+            public string Usage { get; set; }
         }
     }
 }

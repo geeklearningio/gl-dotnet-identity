@@ -81,7 +81,7 @@
                 grantValidation = tokenProvider.ValidateRefreshToken(request.Refresh_Token);
                 if (grantValidation.Success)
                 {
-                    clientValidation = await clientProvider.ValidateTokenAsync(grantValidation.NameIdentifier, request.Client_Id);
+                    clientValidation = await clientProvider.ValidateTokenAsync(grantValidation.Id, grantValidation.NameIdentifier);
                 }
             }
 
