@@ -5,5 +5,9 @@
         bool Success { get; set; }
 
         string NameIdentifier { get; set; }
+
+        string Usage { get; set; }
+
+        string Id { get; set; }
     }
 }

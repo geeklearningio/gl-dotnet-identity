@@ -81,11 +81,9 @@
                 grantValidation = tokenProvider.ValidateRefreshToken(request.Refresh_Token);
                 if (grantValidation.Success)
                 {
-                    clientValidation = await clientProvider.ValidateTokenAsync(grantValidation.NameIdentifier, request.Client_Id);
+                    clientValidation = await clientProvider.ValidateTokenAsync(grantValidation.Id, grantValidation.NameIdentifier);
                 }
             }
-
-            var result = tokenProvider.ValidateAuthorizationCode(request.Code);
 
             if (grantValidation != null && grantValidation.Success)
             {
@@ -96,11 +94,11 @@
                     if (includeRefreshToken)
                     {
                         refreshToken = tokenProvider.GenerateRefreshToken(clientValidation.Identity, new[] { options.Value.Issuer });
-                        await clientProvider.OnTokenEmitted(request.Client_Id, result.NameIdentifier, new IToken[] { token, refreshToken });
+                        await clientProvider.OnTokenEmitted(request.Client_Id, grantValidation.NameIdentifier, new IToken[] { token, refreshToken });
                     }
                     else
                     {
-                        await clientProvider.OnTokenEmitted(request.Client_Id, result.NameIdentifier, new IToken[] { token });
+                        await clientProvider.OnTokenEmitted(request.Client_Id, grantValidation.NameIdentifier, new IToken[] { token });
                     }
 
                     var responseContent = Newtonsoft.Json.JsonConvert.SerializeObject(new
