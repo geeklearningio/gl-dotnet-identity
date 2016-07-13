@@ -13,7 +13,7 @@
     {
         public const string TokenIdClaim = "https://claims.schemas.geeklearning.io/oauth2/token_id";
         public const string TokenUsageClaim = "https://claims.schemas.geeklearning.io/oauth2/token_usage";
-        public const string KeyIdClaim = "https://claims.schemas.geeklearning.io/oauth2/token_usage";
+        public const string KeyIdClaim = "https://claims.schemas.geeklearning.io/oauth2/signing_key_id";
 
         private IOptions<OAuthServerOptions> options;
         private IClientProvider clientProvider;
