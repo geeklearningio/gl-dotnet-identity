@@ -6,6 +6,7 @@
     using Microsoft.Extensions.Options;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Claims;
     using System.Threading.Tasks;
 
     public class OAuthServerMiddleware
@@ -89,16 +90,17 @@
             {
                 if (clientValidation.Success)
                 {
+                    var nameIdentifier = clientValidation.Identity.FindFirst(ClaimTypes.NameIdentifier);
                     IToken token = tokenProvider.GenerateAccessToken(clientValidation.Identity, (await clientProvider.GetClientAudiences(request.Client_Id)).Concat(new[] { options.Value.Issuer }));
                     IToken refreshToken = null;
                     if (includeRefreshToken)
                     {
                         refreshToken = tokenProvider.GenerateRefreshToken(clientValidation.Identity, new[] { options.Value.Issuer });
-                        await clientProvider.OnTokenEmitted(request.Client_Id, grantValidation.NameIdentifier, new IToken[] { token, refreshToken });
+                        await clientProvider.OnTokenEmitted(request.Client_Id, nameIdentifier.Value, new IToken[] { token, refreshToken });
                     }
                     else
                     {
-                        await clientProvider.OnTokenEmitted(request.Client_Id, grantValidation.NameIdentifier, new IToken[] { token });
+                        await clientProvider.OnTokenEmitted(request.Client_Id, nameIdentifier.Value, new IToken[] { token });
                     }
 
                     var responseContent = Newtonsoft.Json.JsonConvert.SerializeObject(new
